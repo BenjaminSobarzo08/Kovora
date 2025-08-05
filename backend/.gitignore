@@ -1,0 +1,25 @@
+# Entorno virtual de Python
+venv/
+
+# Archivos de caché de Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Configuración del sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de log
+*.log
+
+# Archivos de entorno (nunca subirlos si usás claves o tokens)
+.env
+
+# Archivos temporales
+*.tmp
+*.swp
+
+# Salida de build
+dist/
+build/
