@@ -1,19 +1,18 @@
-# routes/transcribe.py
-from fastapi import APIRouter, UploadFile, File
-import whisper
-import tempfile
+from fastapi import APIRouter, File, UploadFile
+
+from services.transcription_service import transcribe_bytes
 
 router = APIRouter()
-model = whisper.load_model("base")
+
 
 @router.post("/transcribe")
 async def transcribe_audio(file: UploadFile = File(...)):
     try:
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp:
-            tmp.write(await file.read())
-            tmp_path = tmp.name
+        audio_bytes = await file.read()
+        suffix = ".webm"
+        if file.filename and "." in file.filename:
+            suffix = f".{file.filename.rsplit('.', 1)[-1]}"
 
-        result = model.transcribe(tmp_path)
-        return {"text": result["text"]}
+        return transcribe_bytes(audio_bytes, suffix=suffix)
     except Exception as e:
         return {"error": str(e)}
